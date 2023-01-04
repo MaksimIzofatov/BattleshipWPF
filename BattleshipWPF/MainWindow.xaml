@@ -3,10 +3,77 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BattleshipWPF"
+        xmlns:local="clr-namespace:BattleshipWPF.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        FontSize="24"
+        Title="Морской бой" Height="450" Width="900">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:CellVM}">
+            <Border BorderBrush="#500F" BorderThickness="1"
+                                        Width="30" Height="30" Margin="0,0,-1,-1"
+                                        Background="Transparent"
+                                        MouseDown="Border_MouseDown">
+                <Grid>
+                    <Ellipse Width="7" Height="7" Fill="#8F0F"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             Visibility="{Binding Miss}"/>
+
+                    <Path Data="M4,4 L25,25 M25,4 L4,25"
+                                              Stroke="#8F0F" StrokeThickness="3"
+                                              Visibility="{Binding Shot}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="20">
+            <TextBlock d:Text="0:00" 
+                       FontSize="36"
+                       HorizontalAlignment="Center"
+                       Margin="0,10,0,10"
+                       Text="{Binding Time}"/>
+            <TextBlock Text="{Binding Steps}" d:Text="Steps: 5"/>
+            <TextBlock Text="{Binding Goal}" d:Text="Goal: 3"/>
+            
+        </StackPanel>
+
+        <ItemsControl ItemsSource="{Binding OurMap}" HorizontalAlignment="Center"
+                      VerticalAlignment="Center" Grid.Column="1">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ItemsControl ItemsSource="{Binding}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        
+                    </ItemsControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <ItemsControl ItemsSource="{Binding EnemyMap}" HorizontalAlignment="Center"
+                      VerticalAlignment="Center" Grid.Column="2">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ItemsControl ItemsSource="{Binding}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
     </Grid>
 </Window>

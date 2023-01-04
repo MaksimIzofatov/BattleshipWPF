@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BattleshipWPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace BattleshipWPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+  public partial class MainWindow : Window
+  {
+    private BattleshipVM _battleshipVM;
+    private Random _random = new Random();
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+      _battleshipVM = new BattleshipVM();
+      DataContext = _battleshipVM;
+      InitializeComponent();
     }
+    private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+      var border = sender as Border;
+      var cell = border.DataContext as CellVM;
+      cell.ToShot();
+
+      int x = _random.Next(10);
+      int y = _random.Next(10);
+      _battleshipVM.ShotToOurMap(x, y);
+    }
+  }
 }
